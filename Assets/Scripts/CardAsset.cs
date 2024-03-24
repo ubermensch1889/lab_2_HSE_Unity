@@ -12,11 +12,11 @@ public class CardAsset : ScriptableObject
     private CardColorsEnum _color;
 
     [SerializeField] 
-    private Image _image;
+    private GameObject _image;
 
     public CardColorsEnum GetColor() => _color;
 
     public CardNamesEnum GetName() => _cardName;
 
-    public Image GetImage() => _image;
+    public GameObject GetImage() => _image;
 }

@@ -10,7 +10,6 @@ namespace Enums
         Nine,
         Eight,
         Seven,
-        Six,
-        Five
+        Six
     }
 }
