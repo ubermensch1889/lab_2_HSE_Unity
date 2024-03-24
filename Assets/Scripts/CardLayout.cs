@@ -4,16 +4,23 @@ using UnityEngine;
 
 public class CardLayout : MonoBehaviour
 {
-    public int LayoutId { get; set; } = 0;
-    
-    public Vector2 Offsеt { get; set; }
+    [SerializeField] 
+    private int _layoutId;
+
+    [SerializeField] 
+    private Vector3 _offsеt;
 
     public void Update()
     {
         
-        foreach (var card in CardGame.GetInstance().GetCardsInLayout(LayoutId)) 
+        foreach (var card in CardGame.GetInstance().GetCardsInLayout(_layoutId))
         {
-            
+            CardGame.GetInstance().dictionary[card].transform.SetParent(transform);
+
+            CardGame.GetInstance().dictionary[card].transform.position =
+                transform.position + _offsеt * card.CardPosition;
+
+            CardGame.GetInstance().dictionary[card].transform.SetSiblingIndex(card.CardPosition);
         }
     }
 }

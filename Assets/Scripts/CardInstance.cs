@@ -13,7 +13,7 @@ public class CardInstance
     
     public int LayoutId { get; private set; }
     
-    public int CardPosition { get; private set; }
+    public int CardPosition { get; set; }
     
     public void MoveToLayout(int layoutNumber)
     {

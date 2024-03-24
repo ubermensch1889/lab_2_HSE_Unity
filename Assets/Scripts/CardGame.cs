@@ -3,12 +3,15 @@ using UnityEngine;
 
 public class CardGame : MonoBehaviour
 {
-    private Dictionary<CardInstance, CardView> _dictionary;
+    public Dictionary<CardInstance, CardView> dictionary = new Dictionary<CardInstance, CardView>();
     
     [SerializeField]
     public List<CardAsset> startCards;
 
     private static CardGame _instance;
+
+    // Чтобы указывать CardPosition при создании карт.
+    private int position = 0;
 
     private CardGame()
     {
@@ -21,7 +24,9 @@ public class CardGame : MonoBehaviour
         {
             Debug.LogWarning("Error");
         }
-        _instance = this;    
+        _instance = this;
+        
+        StartGame();
     }
 
     public static CardGame GetInstance()
@@ -37,27 +42,30 @@ public class CardGame : MonoBehaviour
         }
     }
 
-    public void CreateCardView(CardInstance instance)
+    private void CreateCardView(CardInstance instance)
     {
-        GameObject prefab = GameObject.Instantiate(instance.GetAsset().GetImage());
+        GameObject prefab = Instantiate(instance.GetAsset().GetImage());
         prefab.AddComponent<CardView>();
-        prefab.GetComponent<CardView>().Init(instance);
-        _dictionary.Add(instance, prefab.GetComponent<CardView>());
+        
+        var view = prefab.GetComponent<CardView>();
+        view.Init(instance);
+        
+        dictionary.Add(instance, view);
     }
 
-    public void CreateCard(CardAsset asset, int layoutNumber)
+    private void CreateCard(CardAsset asset, int layoutNumber)
     {
         var cardInstance = new CardInstance(asset);
+        cardInstance.CardPosition = position++;
         
-        
+        CreateCardView(cardInstance);
         cardInstance.MoveToLayout(layoutNumber);
-        
     }
 
     public List<CardInstance> GetCardsInLayout(int layoutId)
     {
         List<CardInstance> list = new List<CardInstance>();
-        foreach (var card in _dictionary.Keys) 
+        foreach (var card in dictionary.Keys) 
         {
             if (card.LayoutId == layoutId)
             {
